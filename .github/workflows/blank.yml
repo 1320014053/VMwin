@@ -1,4 +1,4 @@
-name: CII
+name: CI
 
 on: [push, workflow_dispatch]
 
@@ -6,10 +6,8 @@ jobs:
   build:
 
     runs-on: windows-latest
-    timeout-minutes: 9999
 
     steps:
-    - run: git clone https://github.com/1320014053/VMwin.git
     - name: Download
       run: Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
     - name: Extract
@@ -23,9 +21,6 @@ jobs:
     - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
     - run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
     - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
-    - name: start.bat
-      shell: cmd
-      run: .\VMwin\start.bat
     - name: Create Tunnel
       run: .\ngrok\ngrok.exe tcp 3389
 
